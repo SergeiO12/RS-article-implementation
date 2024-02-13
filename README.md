@@ -1,1 +1,0 @@
-# RS-article-implementation
