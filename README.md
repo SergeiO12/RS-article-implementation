@@ -12,17 +12,19 @@
 
 
 
-![alt text](image-1.png)
+![alt text](image-1.png?raw=true)
 
 
 ### Self-Inspiring.
+
+
 
 ### Self-Inspiring algorithm should break down a task to smaller sub-tasks for step-by-step planning.
 
 ### At each intermediate planning step, the agent “self-inspires” to consider all previously explored planning paths to explore the next planning states. Unlike existing Chain-of-Thoughts and Tree-of-Thoughts which discards states (thoughts) in previously explored paths when generating a new state, SI retains all previous states from all history paths when generating new state.
 
 
-![alt text](image-2.png)
+![alt text](image-2.png?raw=true)
 
 ![alt text](image-3.png)
 
