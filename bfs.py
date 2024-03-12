@@ -72,17 +72,30 @@ def solve(args, task, idx, to_print=True):
         if args.method_evaluate == 'vote':
             values = get_votes(task, x, new_ys,
                                args.n_evaluate_sample)
+        # When args.method_evaluate is set to 'value', the code iterates 
+        # over explored states and calculates path values for each candidate output y in new_ys.
+        # If a candidate y has been previously explored and its value is stored in explored_states, 
+        # that value is used. Otherwise, get_value function is called to determine its value based on historical data.
+        # The calculated path values are then stored in new_explored_states for further reference.
         elif args.method_evaluate == 'value':
             for path in explored_states:
                 path_values = [explored_states[path][y] if y in explored_states[path] else get_value(task, x, y, args.n_evaluate_sample) for y in new_ys]
                 new_explored_states[path] = {y: path_values[i] for i, y in enumerate(new_ys)}
 
         # selection
+                
+        # The selection process relies on historical information to
+        # make informed decisions on which candidates to choose for the next step.
+        # When args.method_select is set to 'greedy', the code considers either 
+        # the maximum value from explored states or current values depending on whether there are existing explored states.
+        
         if args.method_select == 'sample':
             ps = np.array(values) / sum(values)
             select_ids = np.random.choice(ids,
                                           size=args.n_select_sample,
                                           p=ps).tolist()
+        # If there are explored states available (checked with if step > 0 and explored_states), the code selects candidates 
+        # based on their maximum historical values from these states. Otherwise, it selects candidates based on current values.
         elif args.method_select == 'greedy':
             if step > 0 and explored_states:  # Check if there are explored states
                 select_ids = sorted(ids, key=lambda x: max([explored_states.get(path, {}).get(new_ys[x], 0) for path in explored_states]), reverse=True)[:args.n_select_sample]
@@ -91,6 +104,9 @@ def solve(args, task, idx, to_print=True):
                                     key=lambda x: values[x],
                                     reverse=True)[:args.n_select_sample]
         select_new_ys = [new_ys[select_id] for select_id in select_ids]
+
+        # This selection mechanism ensures that past knowledge influences the decision-making process,
+        # leading to potentially more optimal choices.
 
         # log
         if to_print: 
