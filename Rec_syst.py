@@ -1,3 +1,11 @@
+import pandas as pd
+from base import Task
+from pr.text import *
+from models import gpt
+import re
+import random
+from sklearn.metrics.pairwise import cosine_similarity
+
 class MovieLensRecommendationSystem(Task):
     def __init__(self, file='movielens.csv'):
         super().__init__()
